@@ -23,210 +23,221 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-    <div class="container mx-auto p-4 md:p-8">
-        <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 max-w-5xl mx-auto">
-            
-            <header class="mb-8 text-center">
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-900">AWS VPC Subnet Calculator</h1>
-                <p class="text-gray-600 mt-2">Plan your VPC subnets with ease. Enter your main CIDR and define your subnets below.</p>
-            </header>
+<div class="container mx-auto p-4 md:p-8">
+    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 max-w-5xl mx-auto">
 
-            <!-- Main VPC Input -->
-            <div class="mb-6">
-                <label for="vpc-cidr" class="block text-sm font-medium text-gray-700 mb-2">VPC CIDR Block</label>
-                <input type="text" id="vpc-cidr" value="10.0.0.0/16" class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">AWS VPC Subnet Calculator</h1>
+            <p class="text-gray-600 mt-2">Plan your VPC subnets with ease. Enter your main CIDR and define your subnets below.</p>
+        </header>
+
+        <!-- Main VPC Input -->
+        <div class="mb-6">
+            <label for="vpc-cidr" class="block text-sm font-medium text-gray-700 mb-2">VPC CIDR Block</label>
+            <input type="text" id="vpc-cidr" value="10.0.0.0/16" class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+
+        <!-- Subnet Configuration -->
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Define Your Subnets</h2>
+            <div id="subnet-inputs" class="space-y-4">
+                <!-- Dynamic subnet inputs will be added here -->
             </div>
+            <button id="add-subnet-btn" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+                Add Subnet
+            </button>
+        </div>
 
-            <!-- Subnet Configuration -->
-            <div class="mb-6">
-                <h2 class="text-xl font-semibold mb-4 text-gray-800">Define Your Subnets</h2>
-                <div id="subnet-inputs" class="space-y-4">
-                    <!-- Dynamic subnet inputs will be added here -->
+        <!-- Action Button -->
+        <div class="text-center mb-8">
+            <button id="calculate-btn" class="w-full md:w-auto px-8 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition transform hover:scale-105">
+                Calculate Subnets
+            </button>
+        </div>
+
+        <!-- Error Message Display -->
+        <div id="error-message" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-6" role="alert">
+            <strong class="font-bold">Error:</strong>
+            <span class="block sm:inline" id="error-text"></span>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results-section" class="hidden space-y-8">
+            <!-- Results Table -->
+            <div id="results-container">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-semibold text-gray-800">Calculation Results</h2>
+                    <button id="share-btn" class="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" /></svg>
+                        Share Results
+                    </button>
                 </div>
-                <button id="add-subnet-btn" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>
-                    Add Subnet
-                </button>
-            </div>
-
-            <!-- Action Button -->
-            <div class="text-center mb-8">
-                <button id="calculate-btn" class="w-full md:w-auto px-8 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition transform hover:scale-105">
-                    Calculate Subnets
-                </button>
-            </div>
-            
-            <!-- Error Message Display -->
-            <div id="error-message" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-6" role="alert">
-                <strong class="font-bold">Error:</strong>
-                <span class="block sm:inline" id="error-text"></span>
-            </div>
-
-            <!-- Results Section -->
-            <div id="results-section" class="hidden space-y-8">
-                <!-- Results Table -->
-                <div id="results-container">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-semibold text-gray-800">Calculation Results</h2>
-                        <button id="share-btn" class="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" /></svg>
-                            Share Results
-                        </button>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subnet Name</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CIDR Range</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start IP</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End IP</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total IPs</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usable IPs</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remaining IPs</th>
-                                </tr>
-                            </thead>
-                            <tbody id="results-body" class="divide-y divide-gray-200"></tbody>
-                        </table>
-                    </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                        <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subnet Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CIDR Range</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start IP</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End IP</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total IPs</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usable IPs</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remaining IPs</th>
+                        </tr>
+                        </thead>
+                        <tbody id="results-body" class="divide-y divide-gray-200"></tbody>
+                    </table>
                 </div>
+            </div>
 
-                <!-- Terraform Output -->
-                <div id="terraform-container">
-                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-semibold text-gray-800">Terraform Output</h2>
-                        <button id="copy-terraform-btn" class="relative px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition flex items-center overflow-hidden">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 copy-btn-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" /><path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" /></svg>
-                            <span class="copy-btn-text">Copy Code</span>
-                        </button>
-                    </div>
-                    <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto"><code id="terraform-output"></code></pre>
+            <!-- Terraform Output -->
+            <div id="terraform-container">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-semibold text-gray-800">Terraform Output</h2>
+                    <button id="copy-terraform-btn" class="relative px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition flex items-center overflow-hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 copy-btn-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" /><path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" /></svg>
+                        <span class="copy-btn-text">Copy Code</span>
+                    </button>
                 </div>
+                <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto"><code id="terraform-output"></code></pre>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        // --- UTILITY FUNCTIONS for IP calculations ---
-        function ipToLong(ip) { return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0) >>> 0; }
-        function longToIp(long) { return [(long >>> 24) & 255, (long >>> 16) & 255, (long >>> 8) & 255, long & 255].join('.'); }
-        function parseCIDR(cidr) {
-            const match = cidr.match(/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\/(\d{1,2})$/);
-            if (!match) return null;
-            const ip = match[1];
-            const mask = parseInt(match[2], 10);
-            if (mask < 0 || mask > 32) return null;
-            const ipLong = ipToLong(ip);
-            const maskLong = ((1 << (32 - mask)) - 1) ^ 0xFFFFFFFF;
-            const networkLong = ipLong & maskLong;
-            const broadcastLong = networkLong | ~maskLong;
-            return { ip, mask, networkAddress: longToIp(networkLong), broadcastAddress: longToIp(broadcastLong), networkLong, broadcastLong };
-        }
+<script>
+    // --- UTILITY FUNCTIONS for IP calculations ---
+    function ipToLong(ip) { return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0) >>> 0; }
+    function longToIp(long) { return [(long >>> 24) & 255, (long >>> 16) & 255, (long >>> 8) & 255, long & 255].join('.'); }
+    function parseCIDR(cidr) {
+        const match = cidr.match(/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\/(\d{1,2})$/);
+        if (!match) return null;
+        const ip = match[1];
+        const mask = parseInt(match[2], 10);
+        if (mask < 0 || mask > 32) return null;
+        const ipLong = ipToLong(ip);
+        const maskLong = ((1 << (32 - mask)) - 1) ^ 0xFFFFFFFF;
+        const networkLong = ipLong & maskLong;
+        const broadcastLong = networkLong | ~maskLong;
+        return { ip, mask, networkAddress: longToIp(networkLong), broadcastAddress: longToIp(broadcastLong), networkLong, broadcastLong };
+    }
 
-        // --- DOM ELEMENTS ---
-        const vpcCidrInput = document.getElementById('vpc-cidr');
-        const subnetInputsContainer = document.getElementById('subnet-inputs');
-        const addSubnetBtn = document.getElementById('add-subnet-btn');
-        const calculateBtn = document.getElementById('calculate-btn');
-        const resultsSection = document.getElementById('results-section');
-        const resultsBody = document.getElementById('results-body');
-        const errorMessageDiv = document.getElementById('error-message');
-        const errorTextSpan = document.getElementById('error-text');
-        const shareBtn = document.getElementById('share-btn');
-        const terraformOutput = document.getElementById('terraform-output');
-        const copyTerraformBtn = document.getElementById('copy-terraform-btn');
+    // --- DOM ELEMENTS ---
+    const vpcCidrInput = document.getElementById('vpc-cidr');
+    const subnetInputsContainer = document.getElementById('subnet-inputs');
+    const addSubnetBtn = document.getElementById('add-subnet-btn');
+    const calculateBtn = document.getElementById('calculate-btn');
+    const resultsSection = document.getElementById('results-section');
+    const resultsBody = document.getElementById('results-body');
+    const errorMessageDiv = document.getElementById('error-message');
+    const errorTextSpan = document.getElementById('error-text');
+    const shareBtn = document.getElementById('share-btn');
+    const terraformOutput = document.getElementById('terraform-output');
+    const copyTerraformBtn = document.getElementById('copy-terraform-btn');
 
-        let subnetCounter = 0;
+    let subnetCounter = 0;
 
-        // --- CORE FUNCTIONS ---
+    // --- CORE FUNCTIONS ---
 
-        /** Adds a new row for defining a subnet. */
-        function addSubnetRow(name = '', size = '') {
-            subnetCounter++;
-            const subnetDiv = document.createElement('div');
-            subnetDiv.classList.add('flex', 'flex-col', 'md:flex-row', 'gap-4', 'items-center', 'p-3', 'bg-gray-50', 'rounded-lg');
-            subnetDiv.innerHTML = `
+    /** Adds a new row for defining a subnet. */
+    function addSubnetRow(name = '', size = '') {
+        subnetCounter++;
+        const subnetDiv = document.createElement('div');
+        subnetDiv.classList.add('flex', 'flex-col', 'md:flex-row', 'gap-4', 'items-center', 'p-3', 'bg-gray-50', 'rounded-lg');
+        subnetDiv.innerHTML = `
                 <input type="text" value="${name}" placeholder="Subnet Name (e.g., private-app-1)" class="subnet-name w-full md:w-1/2 px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-blue-500">
                 <div class="flex items-center w-full md:w-1/2">
                     <span class="text-gray-500 mr-2">/</span>
-                    <input type="number" value="${size}" placeholder="Size" min="17" max="28" class="subnet-size w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-blue-500">
+                    <input type="number" value="${size}" placeholder="Size" min="16" max="28" class="subnet-size w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-blue-500">
                 </div>
                 <button class="remove-subnet-btn px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>
                 </button>
             `;
-            subnetInputsContainer.appendChild(subnetDiv);
-            subnetDiv.querySelector('.remove-subnet-btn').addEventListener('click', () => subnetDiv.remove());
+        subnetInputsContainer.appendChild(subnetDiv);
+        subnetDiv.querySelector('.remove-subnet-btn').addEventListener('click', () => subnetDiv.remove());
+    }
+
+    function showError(message) {
+        errorTextSpan.textContent = message;
+        errorMessageDiv.classList.remove('hidden');
+        resultsSection.classList.add('hidden');
+    }
+
+    function hideError() { errorMessageDiv.classList.add('hidden'); }
+
+    /** Main calculation logic with enhanced validation. */
+    function calculateSubnets() {
+        hideError();
+        resultsBody.innerHTML = '';
+
+        const vpcCidr = vpcCidrInput.value;
+        const parsedVpc = parseCIDR(vpcCidr);
+
+        if (!parsedVpc || parsedVpc.mask < 16 || parsedVpc.mask > 28) {
+            showError("Invalid VPC CIDR. Must be a valid CIDR block between /16 and /28.");
+            return;
         }
-        
-        function showError(message) {
-            errorTextSpan.textContent = message;
-            errorMessageDiv.classList.remove('hidden');
-            resultsSection.classList.add('hidden');
+
+        let nextAvailableIpLong = parsedVpc.networkLong;
+
+        const subnetsToCalculate = [];
+        let isValid = true;
+
+        document.querySelectorAll('#subnet-inputs > div').forEach((row, index) => {
+            const nameInput = row.querySelector('.subnet-name');
+            const sizeInput = row.querySelector('.subnet-size');
+            const name = nameInput.value.trim() || `subnet-${index + 1}`;
+            const size = parseInt(sizeInput.value, 10);
+
+            if (isNaN(size) || size <= parsedVpc.mask || size > 28) {
+                showError(`Subnet '${name}' has an invalid size. Must be between ${parsedVpc.mask + 1} and 28.`);
+                sizeInput.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                sizeInput.classList.remove('border-red-500');
+            }
+            subnetsToCalculate.push({ name, size });
+        });
+
+        if (!isValid || subnetsToCalculate.length === 0) {
+            if(subnetsToCalculate.length === 0) showError("Please add at least one subnet.");
+            return;
         }
 
-        function hideError() { errorMessageDiv.classList.add('hidden'); }
-        
-        /** Main calculation logic. */
-        function calculateSubnets() {
-            hideError();
-            resultsBody.innerHTML = '';
+        const calculatedSubnets = [];
+        for (const subnet of subnetsToCalculate) {
+            // Align the next available IP to a valid network boundary for this subnet's size.
+            // This prevents invalid CIDR errors (e.g., trying to create 10.0.0.128/24).
+            const alignmentMask = (1 << (32 - subnet.size)) - 1;
+            const alignedNetworkLong = (nextAvailableIpLong + alignmentMask) & ~alignmentMask;
 
-            const vpcCidr = vpcCidrInput.value;
-            const parsedVpc = parseCIDR(vpcCidr);
+            const subnetIpCount = Math.pow(2, 32 - subnet.size);
+            const subnetBroadcastLong = alignedNetworkLong + subnetIpCount - 1;
 
-            if (!parsedVpc || parsedVpc.mask > 24) { // Allow /16 up to /24 for flexibility
-                showError("Invalid VPC CIDR. Please use a block from /16 to /24.");
+            // Check if the calculated subnet fits entirely within the VPC address space.
+            if (subnetBroadcastLong > parsedVpc.broadcastLong) {
+                showError(`Not enough contiguous IP space for subnet '${subnet.name}' (/${subnet.size}). The VPC is full.`);
                 return;
             }
 
-            let remainingIPs = Math.pow(2, 32 - parsedVpc.mask);
-            let nextAvailableIpLong = parsedVpc.networkLong;
-            
-            const subnetsToCalculate = [];
-            let isValid = true;
-            
-            document.querySelectorAll('#subnet-inputs > div').forEach((row, index) => {
-                const nameInput = row.querySelector('.subnet-name');
-                const sizeInput = row.querySelector('.subnet-size');
-                const name = nameInput.value || `subnet-${index + 1}`;
-                const size = parseInt(sizeInput.value, 10);
-                
-                if (isNaN(size) || size <= parsedVpc.mask || size > 28) {
-                    showError(`Subnet '${name}' has an invalid size. Must be between ${parsedVpc.mask + 1} and 28.`);
-                    sizeInput.classList.add('border-red-500');
-                    isValid = false;
-                } else {
-                    sizeInput.classList.remove('border-red-500');
-                }
-                subnetsToCalculate.push({ name, size });
-            });
+            const subnetNetworkAddress = longToIp(alignedNetworkLong);
+            const subnetCidr = `${subnetNetworkAddress}/${subnet.size}`;
 
-            if (!isValid || subnetsToCalculate.length === 0) {
-                if(subnetsToCalculate.length === 0) showError("Please add at least one subnet.");
-                return;
-            }
-            
-            const calculatedSubnets = [];
-            for (const subnet of subnetsToCalculate) {
-                const subnetIpCount = Math.pow(2, 32 - subnet.size);
-                if (subnetIpCount > remainingIPs) {
-                    showError(`Not enough IP addresses for subnet '${subnet.name}'.`);
-                    return;
-                }
-                const subnetNetworkAddress = longToIp(nextAvailableIpLong);
-                const subnetCidr = `${subnetNetworkAddress}/${subnet.size}`;
-                const parsedSubnet = parseCIDR(subnetCidr);
-                const usableIPs = subnetIpCount > 5 ? subnetIpCount - 5 : 0;
-                const startIp = longToIp(parsedSubnet.networkLong + 1);
-                const endIp = longToIp(parsedSubnet.broadcastLong - 1);
-                remainingIPs -= subnetIpCount;
+            // AWS reserves the first 4 and the last 1 IP addresses.
+            const usableIPs = subnetIpCount > 5 ? subnetIpCount - 5 : 0;
+            const startIp = longToIp(alignedNetworkLong + 1);
+            const endIp = longToIp(subnetBroadcastLong - 1);
 
-                const result = { ...subnet, subnetCidr, startIp, endIp, subnetIpCount, usableIPs, remainingIPs };
-                calculatedSubnets.push(result);
-                
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
+            // This is the true remaining IP count from the end of the VPC.
+            const remainingIPs = (parsedVpc.broadcastLong + 1) - (subnetBroadcastLong + 1);
+
+            const result = { ...subnet, subnetCidr, startIp, endIp, subnetIpCount, usableIPs, remainingIPs };
+            calculatedSubnets.push(result);
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${result.name}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${result.subnetCidr}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${result.startIp}</td>
@@ -235,102 +246,104 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${result.usableIPs.toLocaleString()}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">${result.remainingIPs.toLocaleString()}</td>
                 `;
-                resultsBody.appendChild(tr);
-                nextAvailableIpLong = parsedSubnet.broadcastLong + 1;
-            }
+            resultsBody.appendChild(tr);
 
-            generateTerraformOutput(calculatedSubnets);
-            resultsSection.classList.remove('hidden');
+            // The next available IP is the one right after the current subnet's broadcast address.
+            nextAvailableIpLong = subnetBroadcastLong + 1;
         }
 
-        /** Generates Terraform tfvars output */
-        function generateTerraformOutput(subnets) {
-            const tfCode = `subnets = {\n${subnets.map(s => 
-                `  "${s.name}" = {\n    cidr_block = "${s.subnetCidr}"\n  }`
-            ).join(',\n')}\n}`;
-            terraformOutput.textContent = tfCode;
-        }
+        generateTerraformOutput(calculatedSubnets);
+        resultsSection.classList.remove('hidden');
+    }
 
-        /** Handles copying text to clipboard and provides user feedback */
-        function copyToClipboard(text, button) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
+    /** Generates Terraform tfvars output */
+    function generateTerraformOutput(subnets) {
+        const tfCode = `subnets = {\n${subnets.map(s =>
+            `  "${s.name.replace(/"/g, '\\"')}" = {\n    cidr_block = "${s.subnetCidr}"\n  }`
+        ).join(',\n')}\n}`;
+        terraformOutput.textContent = tfCode;
+    }
+
+    /** Handles copying text to clipboard and provides user feedback */
+    function copyToClipboard(text, button) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            const originalHTML = button.innerHTML;
+            button.innerHTML = 'Copied!';
+            button.classList.add('bg-green-500', 'copied');
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.classList.remove('bg-green-500', 'copied');
+            }, 2000);
+        } catch (err) {
+            console.error('Fallback: Oops, unable to copy', err);
+            alert('Failed to copy URL. Please copy it manually.');
+        }
+        document.body.removeChild(textArea);
+    }
+
+    // --- URL STATE MANAGEMENT ---
+
+    /** Generates a shareable URL from the current inputs */
+    function generateShareableUrl() {
+        const subnets = Array.from(document.querySelectorAll('#subnet-inputs > div')).map(row => ({
+            name: row.querySelector('.subnet-name').value,
+            size: row.querySelector('.subnet-size').value
+        }));
+        const config = {
+            vpc: vpcCidrInput.value,
+            subnets: subnets
+        };
+        const encodedConfig = btoa(JSON.stringify(config));
+        const baseUrl = window.location.href.split('?')[0];
+        return `${baseUrl}?config=${encodedConfig}`;
+    }
+
+    /** Reads config from URL on page load */
+    function loadConfigFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const configData = params.get('config');
+        if (configData) {
             try {
-                document.execCommand('copy');
-                const originalHTML = button.innerHTML;
-                button.innerHTML = 'Copied!';
-                button.classList.add('bg-green-500', 'copied');
-                setTimeout(() => {
-                    button.innerHTML = originalHTML;
-                    button.classList.remove('bg-green-500', 'copied');
-                }, 2000);
-            } catch (err) {
-                console.error('Fallback: Oops, unable to copy', err);
-                alert('Failed to copy URL. Please copy it manually.');
-            }
-            document.body.removeChild(textArea);
-        }
-
-        // --- URL STATE MANAGEMENT ---
-
-        /** Generates a shareable URL from the current inputs */
-        function generateShareableUrl() {
-            const subnets = Array.from(document.querySelectorAll('#subnet-inputs > div')).map(row => ({
-                name: row.querySelector('.subnet-name').value,
-                size: row.querySelector('.subnet-size').value
-            }));
-            const config = {
-                vpc: vpcCidrInput.value,
-                subnets: subnets
-            };
-            const encodedConfig = btoa(JSON.stringify(config));
-            const baseUrl = window.location.href.split('?')[0];
-            return `${baseUrl}?config=${encodedConfig}`;
-        }
-        
-        /** Reads config from URL on page load */
-        function loadConfigFromUrl() {
-            const params = new URLSearchParams(window.location.search);
-            const configData = params.get('config');
-            if (configData) {
-                try {
-                    const config = JSON.parse(atob(configData));
-                    vpcCidrInput.value = config.vpc || '10.0.0.0/16';
-                    subnetInputsContainer.innerHTML = ''; // Clear defaults
-                    if (config.subnets && config.subnets.length > 0) {
-                        config.subnets.forEach(s => addSubnetRow(s.name, s.size));
-                        calculateSubnets();
-                    }
-                } catch (e) {
-                    console.error("Failed to parse config from URL", e);
-                    addDefaultSubnets();
+                const config = JSON.parse(atob(configData));
+                vpcCidrInput.value = config.vpc || '10.0.0.0/16';
+                subnetInputsContainer.innerHTML = ''; // Clear defaults
+                if (config.subnets && config.subnets.length > 0) {
+                    config.subnets.forEach(s => addSubnetRow(s.name, s.size));
+                    calculateSubnets();
                 }
-            } else {
-                 addDefaultSubnets();
+            } catch (e) {
+                console.error("Failed to parse config from URL", e);
+                addDefaultSubnets();
             }
+        } else {
+            addDefaultSubnets();
         }
+    }
 
-        function addDefaultSubnets(){
-            addSubnetRow('private-app-1', '24');
-            addSubnetRow('public-web-1', '24');
-        }
+    function addDefaultSubnets(){
+        addSubnetRow('private-app-1', '24');
+        addSubnetRow('public-web-1', '24');
+    }
 
-        // --- INITIALIZATION ---
-        document.addEventListener('DOMContentLoaded', () => {
-            addSubnetBtn.addEventListener('click', () => addSubnetRow());
-            calculateBtn.addEventListener('click', calculateSubnets);
-            shareBtn.addEventListener('click', () => {
-                const urlToCopy = generateShareableUrl();
-                copyToClipboard(urlToCopy, shareBtn);
-            });
-            copyTerraformBtn.addEventListener('click', () => copyToClipboard(terraformOutput.textContent, copyTerraformBtn));
-            
-            loadConfigFromUrl();
+    // --- INITIALIZATION ---
+    document.addEventListener('DOMContentLoaded', () => {
+        addSubnetBtn.addEventListener('click', () => addSubnetRow());
+        calculateBtn.addEventListener('click', calculateSubnets);
+        shareBtn.addEventListener('click', () => {
+            const urlToCopy = generateShareableUrl();
+            copyToClipboard(urlToCopy, shareBtn);
         });
-    </script>
+        copyTerraformBtn.addEventListener('click', () => copyToClipboard(terraformOutput.textContent, copyTerraformBtn));
+
+        loadConfigFromUrl();
+    });
+</script>
 </body>
 </html>
